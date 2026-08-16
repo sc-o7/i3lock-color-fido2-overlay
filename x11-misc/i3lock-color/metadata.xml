@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-  <!-- Replace with your own name and address before publishing. -->
   <maintainer type="person">
-    <email>you@example.com</email>
-    <name>Your Name</name>
+    <email>sc.git.dev@proton.me</email>
+    <name>sc-o7</name>
   </maintainer>
   <longdescription lang="en">
     A fork of i3lock-color adding the opt-in --fido2-or-password option, which
@@ -26,7 +25,7 @@
     higher version of the same package rather than a conflicting one.
   </longdescription>
   <upstream>
-    <remote-id type="github">YOUR-USERNAME/i3lock-color-fido2</remote-id>
-    <bugs-to>https://github.com/YOUR-USERNAME/i3lock-color-fido2/issues</bugs-to>
+    <remote-id type="github">sc-o7/i3lock-color-fido2</remote-id>
+    <bugs-to>https://github.com/sc-o7/i3lock-color-fido2/issues</bugs-to>
   </upstream>
 </pkgmetadata>

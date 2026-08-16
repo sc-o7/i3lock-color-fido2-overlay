@@ -6,8 +6,8 @@ EAPI=8
 inherit autotools git-r3 out-of-source shell-completion
 
 DESCRIPTION="i3lock-color fork with opt-in FIDO2-or-password authentication"
-HOMEPAGE="https://github.com/YOUR-USERNAME/i3lock-color-fido2"
-EGIT_REPO_URI="https://github.com/YOUR-USERNAME/i3lock-color-fido2.git"
+HOMEPAGE="https://github.com/sc-o7/i3lock-color-fido2"
+EGIT_REPO_URI="https://github.com/sc-o7/i3lock-color-fido2.git"
 EGIT_BRANCH="fido2-or-password"
 
 LICENSE="BSD"

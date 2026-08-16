@@ -6,7 +6,7 @@ A Gentoo ebuild repository ("overlay") providing
 `--fido2-or-password` option, so the screen can be unlocked with a FIDO2 key or
 the password, whichever succeeds first.
 
-Source for the fork itself: <https://github.com/YOUR-USERNAME/i3lock-color-fido2>
+Source for the fork itself: <https://github.com/sc-o7/i3lock-color-fido2>
 
 ## Relationship to Gentoo
 
@@ -29,7 +29,7 @@ Use it at your own risk, as with any third-party overlay.
 ```bash
 # app-eselect/eselect-repository is required for this method
 doas eselect repository add i3lock-color-fido2 git \
-    https://github.com/YOUR-USERNAME/i3lock-color-fido2-overlay.git
+    https://github.com/sc-o7/i3lock-color-fido2-overlay.git
 doas emaint sync -r i3lock-color-fido2
 ```
 
@@ -95,7 +95,7 @@ doas tee /etc/portage/repos.conf/i3lock-color-fido2.conf <<'EOF'
 [i3lock-color-fido2]
 location = /var/db/repos/i3lock-color-fido2
 sync-type = git
-sync-uri = https://github.com/YOUR-USERNAME/i3lock-color-fido2-overlay.git
+sync-uri = https://github.com/sc-o7/i3lock-color-fido2-overlay.git
 masters = gentoo
 auto-sync = yes
 EOF
