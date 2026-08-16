@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <!-- Replace with your own name and address before publishing. -->
+  <maintainer type="person">
+    <email>you@example.com</email>
+    <name>Your Name</name>
+  </maintainer>
+  <longdescription lang="en">
+    A fork of i3lock-color adding the opt-in --fido2-or-password option, which
+    starts FIDO2 authentication alongside the normal password prompt so that
+    whichever succeeds first unlocks the screen. An absent or failed key does
+    not count as a password failure, and password authentication stays
+    available throughout.
+
+    The FIDO2 path requires a separate PAM service named i3lock-fido2, which
+    this package deliberately does not install: a package must not silently add
+    an authentication path to the system. An example is installed as
+    documentation. Without that service, --fido2-or-password fails closed and
+    password authentication behaves exactly as in upstream i3lock-color.
+
+    This fork is intended to be temporary and exists while the feature is
+    proposed upstream. Upstream i3lock-color is packaged in ::guru as
+    x11-misc/i3lock-color; this package blocks it because both install
+    /usr/bin/i3lock.
+  </longdescription>
+  <upstream>
+    <remote-id type="github">YOUR-USERNAME/i3lock-color-fido2</remote-id>
+    <bugs-to>https://github.com/YOUR-USERNAME/i3lock-color-fido2/issues</bugs-to>
+  </upstream>
+</pkgmetadata>

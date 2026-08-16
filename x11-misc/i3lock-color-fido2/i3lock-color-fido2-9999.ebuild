@@ -1,0 +1,74 @@
+# Copyright 2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+
+inherit autotools git-r3 out-of-source shell-completion
+
+DESCRIPTION="i3lock-color with opt-in FIDO2-or-password authentication"
+HOMEPAGE="https://github.com/YOUR-USERNAME/i3lock-color-fido2"
+EGIT_REPO_URI="https://github.com/YOUR-USERNAME/i3lock-color-fido2.git"
+EGIT_BRANCH="fido2-or-password"
+
+LICENSE="BSD"
+SLOT="0"
+# Live ebuild: no KEYWORDS, so it is never pulled in by a stable resolve.
+
+# --fido2-or-password needs no extra libraries. It shells out to a second PAM
+# service and reads /proc/self/exe, so the runtime requirement is a
+# FIDO2-capable PAM module, not a link-time dependency. There is deliberately
+# no USE flag: the feature is opt-in at runtime via the command line, so
+# building it in costs nothing and a flag would only create two binaries that
+# behave identically until the option is passed.
+DEPEND="
+	dev-libs/libev
+	media-libs/fontconfig
+	media-libs/libjpeg-turbo:=
+	sys-libs/pam
+	x11-libs/cairo[X]
+	x11-libs/libxcb:=
+	x11-libs/libxkbcommon[X]
+	x11-libs/xcb-util
+	x11-libs/xcb-util-image
+	x11-libs/xcb-util-xrm
+"
+RDEPEND="
+	${DEPEND}
+	!!x11-misc/i3lock
+	!!x11-misc/i3lock-color
+"
+BDEPEND="virtual/pkgconfig"
+
+PATCHES=(
+	"${FILESDIR}/${PN}-cleanup-cflags.patch"
+	"${FILESDIR}/${PN}-disable-automagic.patch"
+)
+
+src_prepare() {
+	default
+	eautoreconf
+}
+
+src_install() {
+	out-of-source_src_install
+	newbashcomp i3lock-bash i3lock
+	newzshcomp i3lock-zsh _i3lock
+	dodoc pam/i3lock-fido2.example
+}
+
+pkg_postinst() {
+	elog "This package installs the 'i3lock' binary and replaces any other"
+	elog "i3lock/i3lock-color installation."
+	elog
+	elog "Password-only behaviour is unchanged. To use FIDO2:"
+	elog
+	elog "  1. Install a FIDO2-capable PAM module, e.g. sys-auth/pam_u2f."
+	elog "  2. Enroll your authenticator (pamu2fcfg > ~/.config/i3lock/u2f_keys)."
+	elog "  3. Create /etc/pam.d/i3lock-fido2. An example is installed at"
+	elog "     ${EROOT}/usr/share/doc/${PF}/i3lock-fido2.example"
+	elog "  4. Run: i3lock --fido2-or-password"
+	elog
+	elog "The PAM service is NOT installed automatically: a package must not"
+	elog "silently add an authentication path to your system. Without it,"
+	elog "--fido2-or-password fails closed and password auth still works."
+}
