@@ -9,7 +9,11 @@ DESCRIPTION="i3lock-color fork with opt-in FIDO2-or-password authentication"
 HOMEPAGE="https://github.com/sc-o7/i3lock-color-fido2"
 SRC_URI="https://github.com/sc-o7/i3lock-color-fido2/archive/refs/tags/${PV}.tar.gz
 	-> ${P}.tar.gz"
-S="${WORKDIR}/${PN}-${PV}"
+# GitHub names the archive directory after the repository, which is
+# i3lock-color-fido2, while PN is i3lock-color so the package can replace the
+# ::guru one. They differ, so S must be spelled out.
+MY_PN="i3lock-color-fido2"
+S="${WORKDIR}/${MY_PN}-${PV}"
 
 LICENSE="BSD"
 SLOT="0"
