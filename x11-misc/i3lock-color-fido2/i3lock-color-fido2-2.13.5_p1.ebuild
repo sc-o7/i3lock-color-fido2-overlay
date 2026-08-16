@@ -7,7 +7,7 @@ inherit autotools out-of-source shell-completion
 
 DESCRIPTION="i3lock-color with opt-in FIDO2-or-password authentication"
 HOMEPAGE="https://github.com/YOUR-USERNAME/i3lock-color-fido2"
-SRC_URI="https://github.com/YOUR-USERNAME/i3lock-color-fido2/archive/refs/tags/v${PV}.tar.gz
+SRC_URI="https://github.com/YOUR-USERNAME/i3lock-color-fido2/archive/refs/tags/${PV}.tar.gz
 	-> ${P}.tar.gz"
 S="${WORKDIR}/${PN}-${PV}"
 
