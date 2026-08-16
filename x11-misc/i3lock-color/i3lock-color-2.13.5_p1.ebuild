@@ -5,7 +5,7 @@ EAPI=8
 
 inherit autotools out-of-source shell-completion
 
-DESCRIPTION="i3lock-color fork with opt-in FIDO2-or-password authentication"
+DESCRIPTION="i3lock-color-fido2: i3lock-color with opt-in FIDO2-or-password unlock"
 HOMEPAGE="https://github.com/sc-o7/i3lock-color-fido2"
 SRC_URI="https://github.com/sc-o7/i3lock-color-fido2/archive/refs/tags/${PV}.tar.gz
 	-> ${P}.tar.gz"
