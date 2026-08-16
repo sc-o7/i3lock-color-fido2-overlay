@@ -5,7 +5,7 @@ EAPI=8
 
 inherit autotools out-of-source shell-completion
 
-DESCRIPTION="i3lock-color with opt-in FIDO2-or-password authentication"
+DESCRIPTION="i3lock-color fork with opt-in FIDO2-or-password authentication"
 HOMEPAGE="https://github.com/YOUR-USERNAME/i3lock-color-fido2"
 SRC_URI="https://github.com/YOUR-USERNAME/i3lock-color-fido2/archive/refs/tags/${PV}.tar.gz
 	-> ${P}.tar.gz"
@@ -39,7 +39,6 @@ DEPEND="
 RDEPEND="
 	${DEPEND}
 	!!x11-misc/i3lock
-	!!x11-misc/i3lock-color
 "
 BDEPEND="virtual/pkgconfig"
 
@@ -61,8 +60,12 @@ src_install() {
 }
 
 pkg_postinst() {
-	elog "This package installs the 'i3lock' binary and replaces any other"
-	elog "i3lock/i3lock-color installation."
+	elog "This is the FIDO2 fork of i3lock-color, installed under the same"
+	elog "package name so that it satisfies dependencies such as"
+	elog "x11-misc/betterlockscreen. Portage prefers it over ::guru only while"
+	elog "its version sorts higher; pin it with a repository entry in"
+	elog "/etc/portage/package.mask or package.accept_keywords if ::guru"
+	elog "publishes a newer version. See the overlay README."
 	elog
 	elog "Password-only behaviour is unchanged. To use FIDO2:"
 	elog

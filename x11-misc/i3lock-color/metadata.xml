@@ -20,9 +20,10 @@
     password authentication behaves exactly as in upstream i3lock-color.
 
     This fork is intended to be temporary and exists while the feature is
-    proposed upstream. Upstream i3lock-color is packaged in ::guru as
-    x11-misc/i3lock-color; this package blocks it because both install
-    /usr/bin/i3lock.
+    proposed upstream. It deliberately uses the same package name as the
+    ::guru x11-misc/i3lock-color package, so that reverse dependencies such
+    as x11-misc/betterlockscreen are satisfied and Portage treats it as a
+    higher version of the same package rather than a conflicting one.
   </longdescription>
   <upstream>
     <remote-id type="github">YOUR-USERNAME/i3lock-color-fido2</remote-id>

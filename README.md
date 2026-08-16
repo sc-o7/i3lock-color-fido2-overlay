@@ -1,7 +1,7 @@
 # i3lock-color-fido2 overlay
 
 A Gentoo ebuild repository ("overlay") providing
-`x11-misc/i3lock-color-fido2`: a fork of
+`x11-misc/i3lock-color`: a fork of
 [i3lock-color](https://github.com/Raymo111/i3lock-color) that adds the opt-in
 `--fido2-or-password` option, so the screen can be unlocked with a FIDO2 key or
 the password, whichever succeeds first.
@@ -33,6 +33,19 @@ doas eselect repository add i3lock-color-fido2 git \
 doas emaint sync -r i3lock-color-fido2
 ```
 
+### Package name
+
+This overlay deliberately uses the **same package name** as the ::guru package,
+`x11-misc/i3lock-color`, rather than a separate `i3lock-color-fido2`. A separate
+name would be blocked against `x11-misc/i3lock-color` (both install
+`/usr/bin/i3lock`), and that block is unsatisfiable for anyone with a reverse
+dependency such as `x11-misc/betterlockscreen`, which requires
+`>=x11-misc/i3lock-color-2.13.3`.
+
+Sharing the name means Portage sees the fork as a higher version of the same
+package: it satisfies reverse dependencies, and `emerge -uDN @world` upgrades to
+it automatically.
+
 Two ebuilds are provided:
 
 | Version | What it builds | Keywords |
@@ -44,7 +57,7 @@ The released version needs `~amd64` accepted, which most users already have via
 `ACCEPT_KEYWORDS`. If not:
 
 ```bash
-echo 'x11-misc/i3lock-color-fido2 ~amd64' \
+echo 'x11-misc/i3lock-color ~amd64' \
     | doas tee -a /etc/portage/package.accept_keywords/i3lock-color-fido2
 ```
 
@@ -53,18 +66,25 @@ Live ebuilds must carry empty `KEYWORDS`
 so `9999` is opted into separately and is not a substitute for keywording:
 
 ```bash
-echo '=x11-misc/i3lock-color-fido2-9999 **' \
+echo '=x11-misc/i3lock-color-9999 **' \
     | doas tee -a /etc/portage/package.accept_keywords/i3lock-color-fido2
 ```
 
-This package installs `/usr/bin/i3lock` and therefore blocks
-`x11-misc/i3lock` and `x11-misc/i3lock-color`. Remove whichever you have:
+Then install it. Because it shares the ::guru package name, this is an ordinary
+upgrade and no unmerge is needed:
 
 ```bash
-doas emerge --deselect x11-misc/i3lock-color
-doas emerge -C x11-misc/i3lock-color
-doas emerge -av x11-misc/i3lock-color-fido2
+doas emerge -av x11-misc/i3lock-color
 ```
+
+You should see Portage pick it from this overlay:
+
+```
+[ebuild     U  ] x11-misc/i3lock-color-2.13.5_p1::i3lock-color-fido2 [2.13.5::guru]
+```
+
+It still blocks `x11-misc/i3lock` (the non-color original), since both install
+`/usr/bin/i3lock`. Unmerge that first if you have it.
 
 ### Without eselect-repository
 
@@ -104,22 +124,49 @@ authentication is unaffected.
    Keep this service isolated from the password stack and from `pam_faillock`.
 4. Lock with `i3lock --fido2-or-password`.
 
+## Staying on the fork
+
+Portage picks the highest version regardless of repository. The fork is
+`2.13.5_p1`, which outranks ::guru's `2.13.5`, so it wins today. If ::guru
+publishes `2.13.6`, that would outrank the fork and `emerge -uDN @world` would
+silently move you back to upstream, losing FIDO2 support.
+
+To prevent that, mask the package in ::guru so only this overlay can provide it:
+
+```bash
+doas mkdir -p /etc/portage/package.mask
+echo 'x11-misc/i3lock-color::guru' \
+    | doas tee /etc/portage/package.mask/i3lock-color-upstream
+```
+
+Verify with:
+
+```bash
+emerge --pretend --update x11-misc/i3lock-color
+```
+
+Alternatively, watch for upstream releases and rebase the fork onto them,
+bumping to e.g. `2.13.6_p1`.
+
 ## Updating
 
 Live ebuilds are not upgraded by `emerge -u`. Refresh with:
 
 ```bash
 doas emaint sync -r i3lock-color-fido2
-doas emerge -uav x11-misc/i3lock-color-fido2   # released version
+doas emerge -uav x11-misc/i3lock-color   # released version
 doas emerge @live-rebuild                      # only if you installed 9999
 ```
 
 ## Uninstalling
 
+Going back to upstream is a downgrade, not an unmerge. Remove any pin, drop the
+repository, and let Portage resolve ::guru again:
+
 ```bash
-doas emerge -C x11-misc/i3lock-color-fido2
+doas rm -f /etc/portage/package.mask/i3lock-color-upstream
 doas eselect repository remove -f i3lock-color-fido2
-doas emerge -av x11-misc/i3lock-color   # back to upstream, from ::guru
+doas emerge -av --oneshot '<x11-misc/i3lock-color-2.13.5_p1'
 ```
 
 ## License
