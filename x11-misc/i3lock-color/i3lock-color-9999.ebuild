@@ -68,7 +68,7 @@ pkg_postinst() {
 	elog "  1. Install a FIDO2-capable PAM module, e.g. sys-auth/pam_u2f."
 	elog "  2. Enroll your authenticator (pamu2fcfg > ~/.config/i3lock/u2f_keys)."
 	elog "  3. Create /etc/pam.d/i3lock-fido2. An example is installed at"
-	elog "     ${EROOT}/usr/share/doc/${PF}/i3lock-fido2.example"
+	elog "     ${EROOT}/usr/share/doc/${PF}/i3lock-fido2.example.bz2"
 	elog "  4. Run: i3lock --fido2-or-password"
 	elog
 	elog "The PAM service is NOT installed automatically: a package must not"
