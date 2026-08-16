@@ -14,14 +14,13 @@ This is a personal overlay. It is **not** affiliated with, endorsed by, or
 reviewed by Gentoo, and it is deliberately **not** submitted to
 [GURU](https://wiki.gentoo.org/wiki/Project:GURU):
 
-- GURU requires `~arch` keywords, and this is a live (`9999`) ebuild, since the
-  fork publishes no release tarballs.
 - GURU expects packages to have their own upstream. This package's upstream is a
   fork of `x11-misc/i3lock-color`, which GURU already ships, so adding it there
   would duplicate and confuse an existing package.
 - The fork is meant to be temporary. If the feature is merged upstream, this
   overlay and the fork are archived, and users go back to
-  `x11-misc/i3lock-color`.
+  `x11-misc/i3lock-color`. GURU asks that packages be removed once they land
+  elsewhere, so adding a package intended for deletion is poor practice.
 
 Use it at your own risk, as with any third-party overlay.
 
@@ -34,7 +33,24 @@ doas eselect repository add i3lock-color-fido2 git \
 doas emaint sync -r i3lock-color-fido2
 ```
 
-Live ebuilds carry no keywords, so unmask it:
+Two ebuilds are provided:
+
+| Version | What it builds | Keywords |
+| --- | --- | --- |
+| `2.13.5_p1` | The tagged release tarball. Use this. | `~amd64` |
+| `9999` | The tip of the `fido2-or-password` branch. | none (live) |
+
+The released version needs `~amd64` accepted, which most users already have via
+`ACCEPT_KEYWORDS`. If not:
+
+```bash
+echo 'x11-misc/i3lock-color-fido2 ~amd64' \
+    | doas tee -a /etc/portage/package.accept_keywords/i3lock-color-fido2
+```
+
+Live ebuilds must carry empty `KEYWORDS`
+([devmanual](https://devmanual.gentoo.org/ebuild-writing/functions/src_unpack/vcs-sources/index.html)),
+so `9999` is opted into separately and is not a substitute for keywording:
 
 ```bash
 echo '=x11-misc/i3lock-color-fido2-9999 **' \
@@ -81,7 +97,7 @@ authentication is unaffected.
    chmod 600 ~/.config/i3lock/u2f_keys
    ```
 3. Create `/etc/pam.d/i3lock-fido2`, adapting the example installed at
-   `/usr/share/doc/i3lock-color-fido2-9999/i3lock-fido2.example.bz2`:
+   `/usr/share/doc/i3lock-color-fido2-*/i3lock-fido2.example.bz2`:
    ```
    auth required pam_u2f.so authfile=/home/USER/.config/i3lock/u2f_keys cue
    ```
@@ -94,7 +110,8 @@ Live ebuilds are not upgraded by `emerge -u`. Refresh with:
 
 ```bash
 doas emaint sync -r i3lock-color-fido2
-doas emerge @live-rebuild
+doas emerge -uav x11-misc/i3lock-color-fido2   # released version
+doas emerge @live-rebuild                      # only if you installed 9999
 ```
 
 ## Uninstalling
